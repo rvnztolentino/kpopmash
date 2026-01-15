@@ -1,5 +1,5 @@
 import { Character, Gender, Vote } from '../types';
-import { INITIAL_FEMALE_CHARACTERS, INITIAL_MALE_CHARACTERS } from '../constants';
+import { INITIAL_FEMALE_CHARACTERS, INITIAL_MALE_CHARACTERS, getImageUrl } from '../constants';
 
 const K_FACTOR = 32;
 
@@ -40,17 +40,24 @@ export const getCharacters = (gender?: Gender): Character[] => {
     ...INITIAL_FEMALE_CHARACTERS,
     ...INITIAL_MALE_CHARACTERS,
   ]);
-  
+
+  // Ensure image URLs are up to date with the new local file strategy
+  // This fixes the issue where old picsum URLs might be cached in localStorage
+  const updatedChars = allChars.map(c => ({
+    ...c,
+    imageUrl: getImageUrl(c.name)
+  }));
+
   if (gender) {
-    return allChars.filter(c => c.gender === gender);
+    return updatedChars.filter(c => c.gender === gender);
   }
-  return allChars;
+  return updatedChars;
 };
 
 export const resetData = () => {
-    localStorage.removeItem('animemash_characters');
-    localStorage.removeItem('animemash_votes');
-    window.location.reload();
+  localStorage.removeItem('animemash_characters');
+  localStorage.removeItem('animemash_votes');
+  window.location.reload();
 }
 
 export const submitVote = (winnerId: string, loserId: string): Vote => {
@@ -90,7 +97,7 @@ export const submitVote = (winnerId: string, loserId: string): Vote => {
     loserId,
     timestamp: Date.now(),
   };
-  
+
   const votes = loadFromStorage<Vote[]>('animemash_votes', []);
   votes.push(vote);
   saveToStorage('animemash_votes', votes);
@@ -100,7 +107,7 @@ export const submitVote = (winnerId: string, loserId: string): Vote => {
 
 export const getRandomPair = (gender: Gender, currentWinnerId?: string): [Character, Character] => {
   const pool = getCharacters(gender);
-  
+
   if (pool.length < 2) throw new Error("Not enough characters");
 
   let char1: Character;
@@ -108,10 +115,10 @@ export const getRandomPair = (gender: Gender, currentWinnerId?: string): [Charac
 
   // If we have a current winner, try to keep them
   if (currentWinnerId) {
-      const found = pool.find(c => c.id === currentWinnerId);
-      char1 = found || pool[Math.floor(Math.random() * pool.length)];
+    const found = pool.find(c => c.id === currentWinnerId);
+    char1 = found || pool[Math.floor(Math.random() * pool.length)];
   } else {
-      char1 = pool[Math.floor(Math.random() * pool.length)];
+    char1 = pool[Math.floor(Math.random() * pool.length)];
   }
 
   // Find a second character that is not the first one

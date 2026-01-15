@@ -1,7 +1,10 @@
 import { Character } from './types';
 
-// Helper to generate a consistent placeholder image based on ID
-const getImageUrl = (id: string) => `https://picsum.photos/seed/${id}/400/500`;
+// Helper to get image path from name
+export const getImageUrl = (name: string) => {
+  const firstName = name.split(' ')[0].toLowerCase();
+  return `/${firstName}.jpg`;
+};
 
 const createChar = (id: string, name: string, series: string, gender: 'male' | 'female'): Character => ({
   id,
@@ -9,7 +12,7 @@ const createChar = (id: string, name: string, series: string, gender: 'male' | '
   series,
   gender,
   elo: 1500,
-  imageUrl: getImageUrl(id),
+  imageUrl: getImageUrl(name),
   wins: 0,
   losses: 0,
 });
