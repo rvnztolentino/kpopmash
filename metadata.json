@@ -1,0 +1,5 @@
+{
+  "name": "animemash",
+  "description": "a facemash-style ranking app for anime characters using the elo rating system.",
+  "requestFramePermissions": []
+}
