@@ -14,14 +14,14 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, user, onLogout, onLogin }) 
 
   return (
     <header className="bg-pink-900 text-white shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between relative">
         {/* Logo Section */}
-        <div className="flex items-center space-x-2 cursor-pointer" onClick={() => onNavigate('vote')}>
+        <div className="flex items-center space-x-2 cursor-pointer z-10" onClick={() => onNavigate('vote')}>
           <h1 className="text-xl font-bold tracking-wide">kpopmash</h1>
         </div>
 
         {/* Navigation - Desktop */}
-        <nav className="hidden md:flex items-center space-x-6 ml-[-45px]">
+        <nav className="hidden md:flex items-center space-x-6 absolute left-1/2 transform -translate-x-1/2">
           <button onClick={() => onNavigate('vote')} className="hover:text-pink-200 transition-colors font-medium">
             Matchups
           </button>
@@ -34,7 +34,7 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, user, onLogout, onLogin }) 
         </nav>
 
         {/* User Section */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 z-10">
           {user ? (
             <div className={`flex items-center space-x-3 group relative cursor-pointer`} onClick={() => setIsProfileOpen(!isProfileOpen)}>
               <span className="hidden sm:inline font-medium text-sm select-none">{user.name}</span>
