@@ -1,5 +1,5 @@
 {
-  "name": "animemash",
-  "description": "a facemash-style ranking app for anime characters using the elo rating system.",
+  "name": "kpopmash",
+  "description": "a facemash-style ranking app for K-pop idols using the elo rating system.",
   "requestFramePermissions": []
 }

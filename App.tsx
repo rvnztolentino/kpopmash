@@ -263,11 +263,11 @@ const App: React.FC = () => {
       return (
         <div className="max-w-2xl mx-auto px-4 py-12 animate-in fade-in duration-500">
           <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 border-b pb-4">About AnimeMash</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 border-b pb-4">About Kpopmash</h2>
 
             <div className="prose prose-red text-gray-600">
               <p className="mb-4">
-                AnimeMash is a crowd-sourced ranking platform inspired by the classic Facemash concept, but for Anime characters.
+                Kpopmash is a crowd-sourced ranking platform inspired by the classic Facemash concept, but for K-pop idols.
               </p>
               <p className="mb-4">
                 We use the <strong>Elo rating system</strong>—the same system used to rank chess players—to ensure a fair and dynamic leaderboard.

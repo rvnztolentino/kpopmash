@@ -14,7 +14,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 </div>
 
                 <h2 className="text-3xl font-extrabold text-gray-900 mb-3 tracking-tight">
-                    Welcome to AnimeMash
+                    Welcome to Kpopmash
                 </h2>
 
                 <p className="text-gray-500 mb-10 text-lg leading-relaxed">

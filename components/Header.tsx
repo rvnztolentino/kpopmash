@@ -18,9 +18,9 @@ const Header: React.FC<HeaderProps> = ({ onNavigate, user, onLogout, onLogin }) 
         {/* Logo Section */}
         <div className="flex items-center space-x-2 cursor-pointer" onClick={() => onNavigate('vote')}>
           <div className="bg-white text-red-800 font-bold px-2 py-1 rounded text-sm tracking-tighter border-2 border-white">
-            AM
+            KM
           </div>
-          <h1 className="text-xl font-bold tracking-wide">ANIMEMASH</h1>
+          <h1 className="text-xl font-bold tracking-wide">KPOPMASH</h1>
         </div>
 
         {/* Navigation - Desktop */}
