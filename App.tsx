@@ -8,6 +8,7 @@ import { getRandomPair, submitVote, getCharacters, resetData, checkVoteLimit } f
 import { supabase } from './services/supabase';
 import { Loader2, Lock } from 'lucide-react';
 import Login from './components/Login';
+import CategorySelector from './components/CategorySelector';
 
 const App: React.FC = () => {
   // --- State ---
@@ -27,8 +28,8 @@ const App: React.FC = () => {
   // Track the ID of the last winner to keep them on screen
   const [streakWinnerId, setStreakWinnerId] = useState<string | undefined>(undefined);
 
-  // Rate Limiting
   const [isVoteLocked, setIsVoteLocked] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   // --- Effects ---
 
@@ -44,6 +45,7 @@ const App: React.FC = () => {
           avatarUrl: session.user.user_metadata.avatar_url || '',
         });
       }
+      setIsAuthLoading(false);
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -56,17 +58,21 @@ const App: React.FC = () => {
         });
       } else {
         setUser(null);
+        setIsVoteLocked(false); // Reset lock on logout
       }
+      setIsAuthLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  // Initial Load
+  // Initial Load - Only run once auth is determined
   useEffect(() => {
-    loadNewPair();
+    if (!isAuthLoading) {
+      loadNewPair();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isAuthLoading]);
 
   // Reload pair when category changes
   useEffect(() => {
@@ -167,6 +173,14 @@ const App: React.FC = () => {
 
   const renderContent = () => {
     if (view === 'vote') {
+      if (isAuthLoading) {
+        return (
+          <div className="flex items-center justify-center h-[60vh]">
+            <Loader2 className="w-10 h-10 text-pink-600 animate-spin" />
+          </div>
+        );
+      }
+
       if (!user) {
         return <Login onLogin={handleLogin} />;
       }
@@ -174,8 +188,8 @@ const App: React.FC = () => {
       if (isVoteLocked) {
         return (
           <div className="flex flex-col items-center justify-center h-[60vh] text-center px-4 animate-in fade-in duration-500">
-            <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-red-100">
-              <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full border border-pink-100">
+              <div className="w-16 h-16 bg-pink-100 text-pink-600 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Lock size={32} />
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Voting Locked</h2>
@@ -185,7 +199,7 @@ const App: React.FC = () => {
               </p>
               <button
                 onClick={() => setView('rankings')}
-                className="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-all shadow-md"
+                className="w-full py-3 bg-pink-600 hover:bg-pink-700 text-white font-bold rounded-lg transition-all shadow-md"
               >
                 View Rankings
               </button>
@@ -197,7 +211,7 @@ const App: React.FC = () => {
       if (isLoadingPair || !pair) {
         return (
           <div className="flex items-center justify-center h-[60vh]">
-            <Loader2 className="w-10 h-10 text-red-600 animate-spin" />
+            <Loader2 className="w-10 h-10 text-pink-600 animate-spin" />
           </div>
         )
       }
@@ -270,7 +284,7 @@ const App: React.FC = () => {
                 kpopmash is a crowd-sourced ranking platform inspired by the classic facemash concept, but for K-pop idols.
               </p>
               <p className="mb-4">
-                We use the <strong>Elo rating system</strong>—the same system used to rank chess players—to ensure a fair and dynamic leaderboard.
+                This uses the <strong>Elo rating system</strong>, which is the same system used to rank chess players, to ensure a fair and dynamic leaderboard.
                 When you vote for a character, their rating goes up, and the opponent's goes down, based on the strength of their previous ratings.
               </p>
               <h3 className="text-xl font-bold text-gray-900 mt-8 mb-3">How it works</h3>
@@ -284,7 +298,7 @@ const App: React.FC = () => {
 
             <div className="mt-10 pt-6 border-t border-gray-100 flex justify-between items-center">
               <span className="text-sm text-gray-400">Created by @rvnztolentino</span>
-              <span className="text-sm text-gray-400">Version 1.0.0 (Demo)</span>
+              <span className="text-sm text-gray-400">Version 1.0.2 (Demo)</span>
             </div>
           </div>
         </div>
@@ -303,13 +317,16 @@ const App: React.FC = () => {
         onLogout={handleLogout}
       />
 
+      <CategorySelector
+        currentCategory={category}
+        onSelectCategory={setCategory}
+      />
+
       <main className="flex-grow py-8">
         {renderContent()}
       </main>
 
       <Footer
-        currentCategory={category}
-        onSelectCategory={setCategory}
         onNavigate={setView}
       />
     </div>
