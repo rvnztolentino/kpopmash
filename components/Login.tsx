@@ -18,7 +18,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 </h2>
 
                 <p className="text-gray-500 mb-10 text-lg leading-relaxed">
-                    Join the community to rank your favorite characters.
+                    Join the community to rank your favorite k-pop idols.
                     Your votes decide who is truly the best!
                 </p>
 

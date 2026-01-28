@@ -285,14 +285,14 @@ const App: React.FC = () => {
               </p>
               <p className="mb-4">
                 This uses the <strong>Elo rating system</strong>, which is the same system used to rank chess players, to ensure a fair and dynamic leaderboard.
-                When you vote for a character, their rating goes up, and the opponent's goes down, based on the strength of their previous ratings.
+                When you vote for a k-pop idol, their rating goes up, and the opponent's goes down, based on the strength of their previous ratings.
               </p>
               <h3 className="text-xl font-bold text-gray-900 mt-8 mb-3">How it works</h3>
               <ul className="list-disc pl-5 space-y-2">
-                <li>You are presented with two random characters from the same category.</li>
+                <li>You are presented with two random k-pop idols from the same category.</li>
                 <li>Click on the one you prefer.</li>
                 <li>The system calculates the new ratings immediately.</li>
-                <li>If a character wins against a high-rated opponent, they gain more points!</li>
+                <li>If a k-pop idol wins against a high-rated opponent, they gain more points!</li>
               </ul>
             </div>
 
